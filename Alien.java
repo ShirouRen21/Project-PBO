@@ -1,4 +1,5 @@
 public abstrak class Alien {
+  
   private double health;
   private String name;
   private double damage;
@@ -11,22 +12,36 @@ public abstrak class Alien {
     this.movement = movement;
   }
 
-  void setHealth(double health){
-    this.health = health;}
-  void setDamage(double damage){
-    this.damage = damage;}
-  void setName(Sting name){
-    this.name = name;}
-  void setMove(long move){
-    this.move = move;}
+  public void setHealth(double health){
+    this.health = health;
+  }
+  
+  public void setDamage(double damage){
+    this.damage = damage;
+  }
+  
+  public void setName(Sting name){
+    this.name = name;
+  }
+  
+  public void setMove(long move){
+    this.move = move;
+  }
 
   public double getHealth(){
-    return health;}
+    return health;
+  }
+  
   public double getDamage(){
-    return damage;}
+    return damage;
+  }
+  
   public string getName(){
-    return name;}
+    return name;
+  }
+  
   public long getMove(){
-    return move;}
+    return move;
+  }
 
 }
