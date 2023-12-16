@@ -11,6 +11,6 @@ public class MinionAlien extends Alien {
 
     @Override
     public void move() {
-        System.out.println(getName() + " is moving with a speed of " + getMove() + " units per second.");
+        System.out.println(getName() + " is moving with a speed of " + getMovement() + " units per second.");
     }
 }
