@@ -5,7 +5,7 @@ public abstract class Alien {
   private double damage;
   private long movement;
 
-  public Alien (double health, String name, double damage, long move){
+  public Alien (double health, String name, double damage, long movement){
     this.health = health;
     this.name = name;
     this.damage = damage;
@@ -24,7 +24,7 @@ public abstract class Alien {
     this.name = name;
   }
   
-  public void setMove(long move){
+  public void setMove(long movement){
     this.movement = movement;
   }
 
