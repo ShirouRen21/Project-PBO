@@ -12,13 +12,17 @@ import java.awt.GridBagLayout;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.sql.SQLException;
 import java.util.Random;
 import java.awt.event.ActionEvent;
 import javax.swing.border.BevelBorder;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
+
+
 public class GUI extends JFrame implements KeyListener {
+
     private static final long serialVersionUID = 1L;
     private JFrame frame = new JFrame();
     private Player player;
@@ -31,6 +35,8 @@ public class GUI extends JFrame implements KeyListener {
     private int yPlayer = 7;
     private int minutes = 0;
     private int seconds = 45;
+
+	private int record=1;
     private static final int TILES = 12;
     private static final int GAP = 1;
     private JTextField heartPane = new JTextField();
@@ -38,26 +44,26 @@ public class GUI extends JFrame implements KeyListener {
     private JTextField pauseText = new JTextField();
     private JPanel[][] tilePanels = new JPanel[TILES][TILES];
 
-    private class AlienThread extends Thread {
+    private class MinionThread extends Thread {
 	@Override
 	public void run() {
-	    Alien alien = new Marshmallow_man_Alien();
+	    Alien alien = new MinionAlien();
 	    alienDraw(alien);
 	}
     }
 
-    private class SnakeThread extends Thread {
+    private class EliteThread extends Thread {
 	@Override
 	public void run() {
-	    Alien alien = new Snake_Alien();
+	    Alien alien = new EliteAlien();
 	    snakeDraw(alien);
 	}
     }
 
-    private class OgreThread extends Thread {
+    private class BossThread extends Thread {
 	@Override
 	public void run() {
-	    Alien alien = new Ogre_Alien();
+	    Alien alien = new BossAlien();
 	    ogreDraw(alien);
 	}
     }
@@ -75,7 +81,7 @@ public class GUI extends JFrame implements KeyListener {
 	public void run() {
 	    while (gameStart == true) {
 		try {
-		    AlienThread.sleep(50);
+			MinionThread.sleep(50);
 		} catch (InterruptedException e) {
 		    e.printStackTrace();
 		}
@@ -90,20 +96,22 @@ public class GUI extends JFrame implements KeyListener {
     private class TimeThread extends Thread {
 	@Override
 	public void run() {
+		record=0;
 	    while (player.getAlive() == true) {
 		while (pauseThread == true) {
 		    try {
-			AlienThread.sleep(50);
+				MinionThread.sleep(50);
 		    } catch (InterruptedException e) {
 			e.printStackTrace();
 		    }
 		}
 		try {
-		    AlienThread.sleep(1000);
+			MinionThread.sleep(1000);
 		} catch (InterruptedException e) {
 		    e.printStackTrace();
 		}
 		seconds -= 1;
+		record+=1;
 		if (seconds < 0) {
 		    minutes -= 1;
 		    if (minutes >= 0) {
@@ -161,7 +169,9 @@ public class GUI extends JFrame implements KeyListener {
 	JButton btnRecords = new JButton("Record");
 	btnRecords.addActionListener(new ActionListener() {
 		@Override
-		public void actionPerformed(ActionEvent e) {Record();}
+		public void actionPerformed(ActionEvent e) {
+			Record();
+		}
 	});
 	panel_1.add(btnRecords);
 
@@ -211,15 +221,53 @@ public class GUI extends JFrame implements KeyListener {
 		JLabel input= new JLabel("Input name");
 		input.setBounds(105,30,100,100);
 		input.setFont(new Font("Arial", Font.PLAIN, 15));
+
+		JButton StartButton= new JButton("Start!");
+		StartButton.setEnabled(false);
+		StartButton.setBounds(105,140,70,30);
+
+
 		JTextField textField= new JTextField();
 		textField.setHorizontalAlignment(SwingConstants.CENTER);
 		textField.setBounds(80,100,120,30);
-		JButton StartButton= new JButton("Start!");
 
-		StartButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {gameStart();}
-		});
-		StartButton.setBounds(105,140,70,30);
+		    StartButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+				try {
+					player.setName(textField.getText());
+					RegisterPlayer.register(player.getName());
+					gameStart();
+				}catch (Exception a){
+					System.out.println(a.getMessage());
+				}
+
+            }
+        });
+
+        // Menambahkan DocumentListener untuk JTextField
+        textField.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
+            @Override
+            public void insertUpdate(javax.swing.event.DocumentEvent e) {
+                updateButtonState();
+            }
+
+            @Override
+            public void removeUpdate(javax.swing.event.DocumentEvent e) {
+                updateButtonState();
+            }
+
+            @Override
+            public void changedUpdate(javax.swing.event.DocumentEvent e) {
+                updateButtonState();
+            }
+
+            // Fungsi untuk mengubah status tombol Start!
+            private void updateButtonState() {
+                StartButton.setEnabled(!textField.getText().isEmpty());
+            }
+        });
+
 		frame.add(panel);
 		panel.add(input);
 		panel.add(textField);
@@ -286,18 +334,18 @@ public class GUI extends JFrame implements KeyListener {
 	TimeThread time = new TimeThread();
 	ItemThread item = new ItemThread();
 	HealthThread health = new HealthThread();
-	AlienThread alien_1 = new AlienThread();
-	AlienThread alien_2 = new AlienThread();
-	AlienThread alien_3 = new AlienThread();
-	AlienThread alien_4 = new AlienThread();
-	AlienThread alien_5 = new AlienThread();
-	SnakeThread snake_1 = new SnakeThread();
-	SnakeThread snake_2 = new SnakeThread();
-	SnakeThread snake_3 = new SnakeThread();
-	SnakeThread snake_4 = new SnakeThread();
-	OgreThread ogre_1 = new OgreThread();
-	OgreThread ogre_2 = new OgreThread();
-	OgreThread ogre_3 = new OgreThread();
+	MinionThread alien_1 = new MinionThread();
+	MinionThread alien_2 = new MinionThread();
+	MinionThread alien_3 = new MinionThread();
+	MinionThread alien_4 = new MinionThread();
+	MinionThread alien_5 = new MinionThread();
+	EliteThread Elite_1 = new EliteThread();
+	EliteThread Elite_2 = new EliteThread();
+	EliteThread Elite_3 = new EliteThread();
+	EliteThread Elite_4 = new EliteThread();
+	BossThread Boss_1 = new BossThread();
+	BossThread Boss_2 = new BossThread();
+	BossThread Boss_3 = new BossThread();
 	FlowLayout fl_bottomHUD = (FlowLayout) bottomHUD.getLayout();
 	fl_bottomHUD.setVgap(25);
 	bottomHUD.setBackground(Color.BLACK);
@@ -320,18 +368,20 @@ public class GUI extends JFrame implements KeyListener {
 	alien_3.start();
 	alien_4.start();
 	alien_5.start();
-	snake_1.start();
-	snake_2.start();
-	snake_3.start();
-	snake_4.start();
-	ogre_1.start();
-	ogre_2.start();
-	ogre_3.start();
+	Elite_1.start();
+	Elite_2.start();
+	Elite_3.start();
+	Elite_4.start();
+	Boss_1.start();
+	Boss_2.start();
+	Boss_3.start();
 
 	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	frame.setFocusable(true);
 	frame.setResizable(false);
 	frame.setVisible(true);
+
+
     }
 
     @Override
@@ -401,13 +451,13 @@ public class GUI extends JFrame implements KeyListener {
 	    while (alien.getHealth() > 0 && player.getAlive() == true && seconds > 31) {
 		while (pauseThread == true) {
 		    try {
-			AlienThread.sleep(50);
+				MinionThread.sleep(50);
 		    } catch (InterruptedException e) {
 			e.printStackTrace();
 		    }
 		}
 		try {
-		    AlienThread.sleep(alien.getMovement());
+			MinionThread.sleep(alien.getMovement());
 		} catch (InterruptedException e) {
 		    e.printStackTrace();
 		}
@@ -441,7 +491,12 @@ public class GUI extends JFrame implements KeyListener {
 		    if (player.getHealth() <= 0) {
 			player.setAlive(false);
 			gameOver();
-		    }
+				try {
+					updatePlayer.updateData(record,player.getName());
+				} catch (SQLException e) {
+					throw new RuntimeException(e);
+				}
+			}
 		}
 		tilePanels[xAlien][yAlien].setBackground(Color.GREEN);
 		frame.repaint();
@@ -459,7 +514,7 @@ public class GUI extends JFrame implements KeyListener {
 	// Snake Alien Spawned
 	while (seconds > 30) {
 	    try {
-		AlienThread.sleep(50);
+			MinionThread.sleep(50);
 	    } catch (InterruptedException e) {
 		e.printStackTrace();
 	    }
@@ -483,13 +538,13 @@ public class GUI extends JFrame implements KeyListener {
 	    while (alien.getHealth() > 0 && player.getAlive() == true && seconds > 16) {
 		while (pauseThread == true) {
 		    try {
-			AlienThread.sleep(50);
+				MinionThread.sleep(50);
 		    } catch (InterruptedException e) {
 			e.printStackTrace();
 		    }
 		}
 		try {
-		    AlienThread.sleep(alien.getMovement());
+			MinionThread.sleep(alien.getMovement());
 		} catch (InterruptedException e) {
 		    e.printStackTrace();
 		}
@@ -511,6 +566,11 @@ public class GUI extends JFrame implements KeyListener {
 		    if (player.getHealth() <= 0) {
 			player.setAlive(false);
 			gameOver();
+				try {
+					updatePlayer.updateData(record,player.getName());
+				} catch (SQLException e) {
+					throw new RuntimeException(e);
+				}
 		    }
 		}
 		tilePanels[xAlien][yAlien].setBackground(Color.ORANGE);
@@ -529,7 +589,7 @@ public class GUI extends JFrame implements KeyListener {
 	// Ogre Alien Stage
 	while (seconds > 15) {
 	    try {
-		AlienThread.sleep(50);
+			MinionThread.sleep(50);
 	    } catch (InterruptedException e) {
 		e.printStackTrace();
 	    }
@@ -556,13 +616,13 @@ public class GUI extends JFrame implements KeyListener {
 	    while (alien.getHealth() > 0 && player.getAlive() == true && seconds > 0) {
 		while (pauseThread == true) {
 		    try {
-			AlienThread.sleep(50);
+				MinionThread.sleep(50);
 		    } catch (InterruptedException e) {
 			e.printStackTrace();
 		    }
 		}
 		try {
-		    AlienThread.sleep(alien.getMovement());
+			MinionThread.sleep(alien.getMovement());
 		} catch (InterruptedException e) {
 		    e.printStackTrace();
 		}
@@ -599,8 +659,13 @@ public class GUI extends JFrame implements KeyListener {
 			|| tilePanels[xAlien + 1][yAlien + 1].equals(tilePanels[xPlayer][yPlayer])) {
 		    player.setHealth(player.getHealth() - 1);
 		    if (player.getHealth() <= 0) {
-			player.setAlive(false);
-			gameOver();
+				player.setAlive(false);
+				gameOver();
+				try {
+					updatePlayer.updateData(record,player.getName());
+				} catch (SQLException e) {
+					throw new RuntimeException(e);
+				}
 		    }
 		}
 		tilePanels[xAlien][yAlien].setBackground(Color.RED);
@@ -616,6 +681,11 @@ public class GUI extends JFrame implements KeyListener {
 	tilePanels[xAlien + 1][yAlien + 1].setBackground(Color.WHITE);
 	if (player.getHealth() > 0) {
 	    gameWin();
+		try {
+			updatePlayer.updateData(record,player.getName());
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
 	}
     }
 
@@ -627,7 +697,7 @@ public class GUI extends JFrame implements KeyListener {
 	for (int i = 0; i < seconds; i++) {
 	    dropItem = itemRarity.nextInt(item.getRarity());
 	    try {
-		AlienThread.sleep(item.getSpawnRate());
+			MinionThread.sleep(item.getSpawnRate());
 	    } catch (InterruptedException e) {
 		e.printStackTrace();
 	    }
@@ -637,7 +707,7 @@ public class GUI extends JFrame implements KeyListener {
 		while (dropItem == 0) {
 		    tilePanels[xItem][yItem].setBackground(Color.MAGENTA);
 		    try {
-			AlienThread.sleep(50);
+				MinionThread.sleep(50);
 		    } catch (InterruptedException e) {
 			e.printStackTrace();
 		    }
@@ -651,6 +721,7 @@ public class GUI extends JFrame implements KeyListener {
     }
 
     public void gameOver() {
+
 	frame.getContentPane().removeAll();
 	frame.getContentPane().setLayout(new BorderLayout(0, 0));
 
@@ -670,11 +741,12 @@ public class GUI extends JFrame implements KeyListener {
 	buttonsGameOver.add(btnQuit_1);
 	btnQuit_1.addActionListener(new ActionListener() {
 	    public void actionPerformed(ActionEvent arg0) {
-		System.exit(0);
+			System.exit(0);
 	    }
 	});
 	frame.setVisible(true);
-    }
+
+	}
 
     public void gameWin() {
 	frame.getContentPane().removeAll();
@@ -700,7 +772,7 @@ public class GUI extends JFrame implements KeyListener {
 	    }
 	});
 	frame.setVisible(true);
-    }
+	}
 
     public void credits() {
 
@@ -735,6 +807,8 @@ public class GUI extends JFrame implements KeyListener {
 
 	public void Record(){
 
+
+		Display.displayData();
 	}
     public void pauseScreen() {
 	if (pauseThread == true) {
