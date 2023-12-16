@@ -3,13 +3,13 @@ public abstract class Alien {
   private double health;
   private String name;
   private double damage;
-  private long move;
+  private long movement;
 
   public Alien (double health, String name, double damage, long move){
     this.health = health;
     this.name = name;
     this.damage = damage;
-    this.move = move;
+    this.movement = movement;
   }
 
   public void setHealth(double health){
@@ -25,7 +25,7 @@ public abstract class Alien {
   }
   
   public void setMove(long move){
-    this.move = move;
+    this.movement = movement;
   }
 
   public double getHealth(){
@@ -40,8 +40,8 @@ public abstract class Alien {
     return name;
   }
   
-  public long getMove(){
-    return move;
+  public long getMovement(){
+    return movement;
   }
 
   public abstract void attack();
