@@ -1,4 +1,3 @@
-package edu.project.fin;
 
 public class Player {
     public double health;
