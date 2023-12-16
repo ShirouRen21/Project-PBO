@@ -1,5 +1,3 @@
-package edu.project.fin;
-
 public class Item {
     private int health;
     private int rarity;
