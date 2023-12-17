@@ -1,46 +1,45 @@
-
 public class Player {
-    public double health;
-    public String name = "";
-    public boolean alive;
-    public long movement;
+    private String name;
+    private double health;
+    private boolean alive;
+    private long movement;
 
     public Player(String name, double health, boolean alive, long movement) {
-	this.name = name;
-	this.health = health;
-	this.movement = movement;
-	this.alive = alive;
+        this.name = name;
+        this.health = health;
+        this.alive = alive;
+        this.movement = movement;
     }
 
     public void setName(String name) {
-	this.name = name;
+        this.name = name;
     }
 
     public String getName() {
-	return name;
+        return name;
     }
 
     public void setHealth(double health) {
-	this.health = health;
+        this.health = health;
     }
 
     public double getHealth() {
-	return health;
+        return health;
     }
 
-    public void setLuck(long movement) {
-	this.movement = movement;
+    public void setMovement(long movement) {
+        this.movement = movement;
     }
 
     public long getMovement() {
-	return movement;
+        return movement;
     }
 
     public void setAlive(boolean alive) {
-	this.alive = alive;
+        this.alive = alive;
     }
 
-    public boolean getAlive() {
-	return alive;
+    public boolean isAlive() {
+        return alive;
     }
 }
