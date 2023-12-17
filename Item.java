@@ -4,33 +4,32 @@ public class Item {
     private long spawnRate;
 
     public Item(int health, long spawnRate, int rarity) {
-	super();
-	this.health = health;
-	this.spawnRate = spawnRate;
-	this.rarity = rarity;
+        this.health = health;
+        this.spawnRate = spawnRate;
+        this.rarity = rarity;
     }
 
-    public void setHealth(int health) {
-	this.health = health;
+    public void setItemHealth(int health) {
+        this.health = health;
     }
 
-    public int getHealth() {
-	return health;
+    public int getItemHealth() {
+        return health;
     }
 
-    public void setRarity(int rarity) {
-	this.rarity = rarity;
+    public void setItemRarity(int rarity) {
+        this.rarity = rarity;
     }
 
-    public int getRarity() {
-	return rarity;
+    public int getItemRarity() {
+        return rarity;
     }
 
-    public void setSpawnRate(long spawnRate) {
-	this.spawnRate = spawnRate;
+    public void setItemSpawnRate(long spawnRate) {
+        this.spawnRate = spawnRate;
     }
 
-    public long getSpawnRate() {
-	return spawnRate;
+    public long getItemSpawnRate() {
+        return spawnRate;
     }
 }
