@@ -432,7 +432,7 @@ public class GUI extends JFrame implements KeyListener {
 	int moveAlien = alien_move.nextInt(4);
 
 	// Marshmallow Man Spawned
-	if (alien.getName().equals("Marshmallow Man")) {
+	if (alien.getName().equals("Minion Alien")) {
 	    if (moveAlien == 0) { // Spawn - Top
 		xAlien = alien_move.nextInt(TILES - 1);
 	    }
@@ -519,7 +519,7 @@ public class GUI extends JFrame implements KeyListener {
 		e.printStackTrace();
 	    }
 	}
-	if (alien.getName().equals("Snake Alien")) {
+	if (alien.getName().equals("Elite Alien")) {
 	    if (moveAlien == 0) { // Spawn - Top
 		xAlien = alien_move.nextInt(TILES - 1);
 	    }
@@ -594,7 +594,7 @@ public class GUI extends JFrame implements KeyListener {
 		e.printStackTrace();
 	    }
 	}
-	if (alien.getName().equals("Ogre Alien")) {
+	if (alien.getName().equals("Boss Alien")) {
 	    if (moveAlien == 0) { // Spawn - Top
 		xAlien = alien_move.nextInt(TILES - 2);
 	    }
